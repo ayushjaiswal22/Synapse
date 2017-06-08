@@ -17,6 +17,11 @@ import os
 from caffe.proto import caffe_pb2
 import google.protobuf as pb2
 
+from google.protobuf import text_format
+
+import prototxt_mod
+
+
 class SolverWrapper(object):
     """A simple wrapper around Caffe's solver.
     This wrapper gives us control over he snapshotting process, which we
@@ -27,6 +32,8 @@ class SolverWrapper(object):
                  pretrained_model=None):
         """Initialize the SolverWrapper."""
         self.output_dir = output_dir
+
+        # print "ROIDB: {}".format(str(roidb))
 
         if (cfg.TRAIN.HAS_RPN and cfg.TRAIN.BBOX_REG and
             cfg.TRAIN.BBOX_NORMALIZE_TARGETS):
@@ -95,24 +102,34 @@ class SolverWrapper(object):
         last_snapshot_iter = -1
         timer = Timer()
         model_paths = []
+
         while self.solver.iter < max_iters:
+
             # Make one SGD update
             timer.tic()
+
             self.solver.step(1)
+
             timer.toc()
+
             if self.solver.iter % (10 * self.solver_param.display) == 0:
+
                 print 'speed: {:.3f}s / iter'.format(timer.average_time)
 
             if self.solver.iter % cfg.TRAIN.SNAPSHOT_ITERS == 0:
+
                 last_snapshot_iter = self.solver.iter
                 model_paths.append(self.snapshot())
 
         if last_snapshot_iter != self.solver.iter:
+
             model_paths.append(self.snapshot())
+
         return model_paths
 
 def get_training_roidb(imdb):
     """Returns a roidb (Region of Interest database) for use in training."""
+
     if cfg.TRAIN.USE_FLIPPED:
         print 'Appending horizontally-flipped training examples...'
         imdb.append_flipped_images()
@@ -139,6 +156,7 @@ def filter_roidb(roidb):
                            (overlaps >= cfg.TRAIN.BG_THRESH_LO))[0]
         # image is only valid if such boxes exist
         valid = len(fg_inds) > 0 or len(bg_inds) > 0
+
         return valid
 
     num = len(roidb)
@@ -148,9 +166,45 @@ def filter_roidb(roidb):
                                                        num, num_after)
     return filtered_roidb
 
+
 def train_net(solver_prototxt, roidb, output_dir,
               pretrained_model=None, max_iters=40000):
     """Train a Fast R-CNN network."""
+
+    # ------------- prototxt training files are changed here ---------------
+
+    # At this point coco.py already checked if the list is empty and changed it accordingly
+    cat_count = len(cfg.TRAIN.CAT_IDS)
+
+    # parse the solver.prototxt file
+    solver = caffe_pb2.SolverParameter()
+    with open(solver_prototxt, 'r') as f:
+        text_format.Merge(f.read(), solver)
+
+    # extract the file path of the train.prototxt from the solver
+    train_prototxt_path = solver.train_net
+
+    # load the train.prototxt to the proto manager
+    train_proto = prototxt_mod.PrototxtManager(train_prototxt_path)
+
+    # change the parameters according the cat id amount in some layers
+    input_data_layer = train_proto.get_layer_by_name("input-data")
+    value_string = "'num_classes': " + str(cat_count + 1)
+
+    input_data_layer.python_param.param_str = value_string
+
+    roi_data_layer = train_proto.get_layer_by_name("roi-data")
+    roi_data_layer.python_param.param_str = value_string
+
+    cls_score_layer = train_proto.get_layer_by_name("cls_score")
+    cls_score_layer.inner_product_param.num_output = cat_count + 1
+
+    bbox_pred_layer = train_proto.get_layer_by_name("bbox_pred")
+    bbox_pred_layer.inner_product_param.num_output = 4 * (cat_count + 1)
+
+    # overwrite train.prototxt
+    train_proto.write_prototxt(train_prototxt_path)
+    print "Changed {} for {} classes".format(str(train_prototxt_path), str(cat_count))
 
     roidb = filter_roidb(roidb)
     sw = SolverWrapper(solver_prototxt, roidb, output_dir,
@@ -158,5 +212,6 @@ def train_net(solver_prototxt, roidb, output_dir,
 
     print 'Solving...'
     model_paths = sw.train_model(max_iters)
+
     print 'done solving'
     return model_paths

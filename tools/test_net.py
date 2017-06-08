@@ -17,6 +17,10 @@ import caffe
 import argparse
 import pprint
 import time, os, sys
+from pycocotools.coco import COCO
+import os.path as osp
+
+import prototxt_mod
 
 def parse_args():
     """
@@ -67,6 +71,30 @@ if __name__ == '__main__':
         cfg_from_file(args.cfg_file)
     if args.set_cfgs is not None:
         cfg_from_list(args.set_cfgs)
+
+    # ----- prototxt test files are changed here -------
+
+    cat_count = len(cfg.TRAIN.CAT_IDS)
+    # TODO: Bad hardcode
+    if cat_count == 0:
+        rootPath = osp.join(cfg.DATA_DIR, 'coco')
+        annPath = 'annotations'
+        dataType = 'train2014'
+        annFile = '%s/%s/instances_%s.json' % (rootPath, annPath, dataType)
+        coco = COCO(annFile)
+        cat_count = len(coco.getCatIds())
+
+    test_prototxt_filename = args.prototxt
+    test_proto = prototxt_mod.PrototxtManager(test_prototxt_filename)
+
+    cls_score_layer = test_proto.get_layer_by_name("cls_score")
+    cls_score_layer.inner_product_param.num_output = cat_count + 1
+
+    bbox_pred_layer = test_proto.get_layer_by_name("bbox_pred")
+    bbox_pred_layer.inner_product_param.num_output = 4 * (cat_count + 1)
+
+    test_proto.write_prototxt(test_prototxt_filename)
+    print "Changed {} for {} classes".format(str(test_prototxt_filename), str(cat_count))
 
     cfg.GPU_ID = args.gpu_id
 

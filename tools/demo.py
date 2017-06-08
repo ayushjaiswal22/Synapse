@@ -11,10 +11,20 @@
 Demo script showing detections in sample images.
 
 See README.md for installation instructions before running.
+
+------------------------------------------------------------
+-- FIXED VERSION by Vahid Rahmani and Sven Stauden (DFKI) --
+To run the demo on your data, please change the following lines:
+
+- line 36: Write the category IDs of the classes you want the demo run on into the list category_ids. Leave the
+  list empty if you want to run the demo on all MSCoco categories
+- line 44: Give the filename of the trained model (.caffemodel file)
+------------------------------------------------------------
+
 """
 
 import _init_paths
-from fast_rcnn.config import cfg
+from fast_rcnn.config import cfg, cfg_from_file
 from fast_rcnn.test import im_detect
 from fast_rcnn.nms_wrapper import nms
 from utils.timer import Timer
@@ -23,18 +33,16 @@ import numpy as np
 import scipy.io as sio
 import caffe, os, sys, cv2
 import argparse
+import customToolbox
 
-CLASSES = ('__background__',
-           'aeroplane', 'bicycle', 'bird', 'boat',
-           'bottle', 'bus', 'car', 'cat', 'chair',
-           'cow', 'diningtable', 'dog', 'horse',
-           'motorbike', 'person', 'pottedplant',
-           'sheep', 'sofa', 'train', 'tvmonitor')
 
+# TODO: Automatically assign latest caffemodel here
+#  List pretrainend model you want to run the demo on here
 NETS = {'vgg16': ('VGG16',
-                  'VGG16_faster_rcnn_final.caffemodel'),
+                  'vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel'),
         'zf': ('ZF',
-                  'ZF_faster_rcnn_final.caffemodel')}
+                  'ZF_faster_rcnn_final.caffemodel')
+        }
 
 
 def vis_detections(im, class_name, dets, thresh=0.5):
@@ -64,16 +72,17 @@ def vis_detections(im, class_name, dets, thresh=0.5):
     ax.set_title(('{} detections with '
                   'p({} | box) >= {:.1f}').format(class_name, class_name,
                                                   thresh),
-                  fontsize=14)
+                 fontsize=14)
     plt.axis('off')
     plt.tight_layout()
     plt.draw()
+
 
 def demo(net, image_name):
     """Detect object classes in an image using pre-computed object proposals."""
 
     # Load the demo image
-    im_file = os.path.join(cfg.DATA_DIR, 'demo', image_name)
+    im_file = image_name
     im = cv2.imread(im_file)
 
     # Detect all object classes and regress object bounds
@@ -97,6 +106,7 @@ def demo(net, image_name):
         dets = dets[keep, :]
         vis_detections(im, cls, dets, thresh=CONF_THRESH)
 
+
 def parse_args():
     """Parse input arguments."""
     parser = argparse.ArgumentParser(description='Faster R-CNN demo')
@@ -107,6 +117,8 @@ def parse_args():
                         action='store_true')
     parser.add_argument('--net', dest='demo_net', help='Network to use [vgg16]',
                         choices=NETS.keys(), default='vgg16')
+    parser.add_argument('--config', dest='cfg_path', help='config file to use for demo',
+                        default='../experiments/cfgs/faster_rcnn_end2end.yml')
 
     args = parser.parse_args()
 
@@ -117,10 +129,29 @@ if __name__ == '__main__':
 
     args = parse_args()
 
-    prototxt = os.path.join(cfg.MODELS_DIR, NETS[args.demo_net][0],
-                            'faster_rcnn_alt_opt', 'faster_rcnn_test.pt')
-    caffemodel = os.path.join(cfg.DATA_DIR, 'faster_rcnn_models',
-                              NETS[args.demo_net][1])
+    # Load config file
+    cfg_from_file(args.cfg_path)
+
+    # Load category IDs from the config file
+    category_ids = cfg.TRAIN.CAT_IDS
+
+    # Amount of random test images per category
+    sample_img_count = 3
+
+    # list up all classes that you want the demo run on. Do not forget to include __background__ as additional class.
+    # If you do not know the correct string of your categories, check data/MSCOCO_API_categories.py or better
+    # use create_class_tuple() from tools/customToolbox.py
+    # CLASSES = ('__background__', 'person', 'car', 'dog', 'horse')
+
+    CLASSES = customToolbox.create_class_tuple(category_ids)
+    print "Classes: " + str(CLASSES)
+
+    # The prototxt with the test net
+    prototxt = os.path.join(cfg.ROOT_DIR, 'models/coco/VGG_CNN_M_1024/faster_rcnn_end2end/test.prototxt')
+    print "prototxt " + prototxt
+
+    caffemodel = os.path.join(cfg.DATA_DIR, 'faster_rcnn_models', NETS[args.demo_net][1])
+    print "caffemodel " + caffemodel
 
     if not os.path.isfile(caffemodel):
         raise IOError(('{:s} not found.\nDid you run ./data/script/'
@@ -141,8 +172,14 @@ if __name__ == '__main__':
     for i in xrange(2):
         _, _= im_detect(net, im)
 
-    im_names = ['000456.jpg', '000542.jpg', '001150.jpg',
-                '001763.jpg', '004545.jpg']
+    # image names for the images on which the demo should run on.
+    im_names = customToolbox.get_val_images(sample_img_count, category_ids)
+
+    # im_names = ['data/demo/COCO_train2014_000000555583.jpg',
+    #             'data/demo/COCO_train2014_000000155995.jpg',
+    #             'data/demo/COCO_train2014_000000134586.jpg',
+    #             ]
+
     for im_name in im_names:
         print '~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
         print 'Demo for data/demo/{}'.format(im_name)

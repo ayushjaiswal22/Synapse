@@ -1,3 +1,4 @@
+#
 # --------------------------------------------------------
 # Fast/er R-CNN
 # Licensed under The MIT License [see LICENSE for details]
@@ -16,10 +17,12 @@ import scipy.io as sio
 import cPickle
 import json
 import uuid
+
 # COCO API
 from pycocotools.coco import COCO
 from pycocotools.cocoeval import COCOeval
 from pycocotools import mask as COCOmask
+
 
 def _filter_crowd_proposals(roidb, crowd_thresh):
     """
@@ -42,8 +45,10 @@ def _filter_crowd_proposals(roidb, crowd_thresh):
         roidb[ix]['gt_overlaps'] = scipy.sparse.csr_matrix(overlaps)
     return roidb
 
+
 class coco(imdb):
     def __init__(self, image_set, year):
+
         imdb.__init__(self, 'coco_' + year + '_' + image_set)
         # COCO specific config options
         self.config = {'top_k' : 2000,
@@ -57,11 +62,22 @@ class coco(imdb):
         self._data_path = osp.join(cfg.DATA_DIR, 'coco')
         # load COCO API, classes, class <-> id mappings
         self._COCO = COCO(self._get_ann_file())
-        cats = self._COCO.loadCats(self._COCO.getCatIds())
+
+        cats = self._COCO.loadCats(cfg.TRAIN.CAT_IDS)
+
+        # if the list in the cfg file is empty, use all possible category IDs
+
+        if cfg.TRAIN.CAT_IDS == []:
+            cfg.TRAIN.CAT_IDS = self._COCO.getCatIds()
+            cats = self._COCO.loadCats(self._COCO.getCatIds())
+
         self._classes = tuple(['__background__'] + [c['name'] for c in cats])
         self._class_to_ind = dict(zip(self.classes, xrange(self.num_classes)))
-        self._class_to_coco_cat_id = dict(zip([c['name'] for c in cats],
-                                              self._COCO.getCatIds()))
+
+        self._class_to_coco_cat_id = dict(zip([c['name'] for c in cats], cfg.TRAIN.CAT_IDS))
+
+        print str(self._class_to_coco_cat_id)
+
         self._image_index = self._load_image_set_index()
         # Default to roidb handler
         self.set_proposal_method('selective_search')
@@ -93,6 +109,7 @@ class coco(imdb):
         Load image ids.
         """
         image_ids = self._COCO.getImgIds()
+
         return image_ids
 
     def _get_widths(self):
@@ -239,6 +256,7 @@ class coco(imdb):
         objs = self._COCO.loadAnns(annIds)
         # Sanitize bboxes -- some are invalid
         valid_objs = []
+
         for obj in objs:
             x1 = np.max((0, obj['bbox'][0]))
             y1 = np.max((0, obj['bbox'][1]))
@@ -248,12 +266,22 @@ class coco(imdb):
                 obj['clean_bbox'] = [x1, y1, x2, y2]
                 valid_objs.append(obj)
         objs = valid_objs
-        num_objs = len(objs)
+
+        # FIX
+        # only count objects that have cat ids for which we want to apply finetuning
+        fine_objs = []
+
+        for ix, obj in enumerate(objs):
+            if obj['category_id'] in cfg.TRAIN.CAT_IDS:
+                fine_objs.append(obj)
+
+        num_objs = len(fine_objs)
+        objs = fine_objs
 
         boxes = np.zeros((num_objs, 4), dtype=np.uint16)
-        gt_classes = np.zeros((num_objs), dtype=np.int32)
+        gt_classes = np.zeros(num_objs, dtype=np.int32)
         overlaps = np.zeros((num_objs, self.num_classes), dtype=np.float32)
-        seg_areas = np.zeros((num_objs), dtype=np.float32)
+        seg_areas = np.zeros(num_objs, dtype=np.float32)
 
         # Lookup table to map from COCO category ids to our internal class
         # indices
@@ -262,16 +290,26 @@ class coco(imdb):
                                          for cls in self._classes[1:]])
 
         for ix, obj in enumerate(objs):
-            cls = coco_cat_id_to_class_ind[obj['category_id']]
-            boxes[ix, :] = obj['clean_bbox']
-            gt_classes[ix] = cls
-            seg_areas[ix] = obj['area']
-            if obj['iscrowd']:
-                # Set overlap to -1 for all classes for crowd objects
-                # so they will be excluded during training
-                overlaps[ix, :] = -1.0
-            else:
-                overlaps[ix, cls] = 1.0
+
+            # FIX: This if condition has not effect (is always true) because we now only consider objects
+            # that have the correct object ids.
+            if obj['category_id'] in cfg.TRAIN.CAT_IDS:
+
+                cls = coco_cat_id_to_class_ind[obj['category_id']]
+
+                boxes[ix, :] = obj['clean_bbox']
+
+                gt_classes[ix] = cls
+                seg_areas[ix] = obj['area']
+
+                if obj['iscrowd']:
+
+                    # Set overlap to -1 for all classes for crowd objects
+                    # so they will be excluded during training
+                    overlaps[ix, :] = -1.0
+                else:
+
+                    overlaps[ix, cls] = 1.0
 
         ds_utils.validate_boxes(boxes, width=width, height=height)
         overlaps = scipy.sparse.csr_matrix(overlaps)
@@ -291,6 +329,7 @@ class coco(imdb):
     def _print_detection_eval_metrics(self, coco_eval):
         IoU_lo_thresh = 0.5
         IoU_hi_thresh = 0.95
+
         def _get_thr_ind(coco_eval, thr):
             ind = np.where((coco_eval.params.iouThrs > thr - 1e-5) &
                            (coco_eval.params.iouThrs < thr + 1e-5))[0][0]
@@ -325,6 +364,9 @@ class coco(imdb):
         coco_dt = self._COCO.loadRes(res_file)
         coco_eval = COCOeval(self._COCO, coco_dt)
         coco_eval.params.useSegm = (ann_type == 'segm')
+
+        coco_eval.params.catIds = cfg.TRAIN.CAT_IDS
+
         coco_eval.evaluate()
         coco_eval.accumulate()
         self._print_detection_eval_metrics(coco_eval)
@@ -360,11 +402,9 @@ class coco(imdb):
         for cls_ind, cls in enumerate(self.classes):
             if cls == '__background__':
                 continue
-            print 'Collecting {} results ({:d}/{:d})'.format(cls, cls_ind,
-                                                          self.num_classes - 1)
+            print 'Collecting {} results ({:d}/{:d})'.format(cls, cls_ind, self.num_classes - 1)
             coco_cat_id = self._class_to_coco_cat_id[cls]
-            results.extend(self._coco_results_one_category(all_boxes[cls_ind],
-                                                           coco_cat_id))
+            results.extend(self._coco_results_one_category(all_boxes[cls_ind], coco_cat_id))
         print 'Writing results json to {}'.format(res_file)
         with open(res_file, 'w') as fid:
             json.dump(results, fid)

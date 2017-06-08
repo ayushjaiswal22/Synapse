@@ -14,6 +14,7 @@ import numpy.random as npr
 from generate_anchors import generate_anchors
 from utils.cython_bbox import bbox_overlaps
 from fast_rcnn.bbox_transform import bbox_transform
+import pdb
 
 DEBUG = False
 
@@ -71,6 +72,8 @@ class AnchorTargetLayer(caffe.Layer):
         # filter out-of-image anchors
         # measure GT overlap
 
+        # assert False
+
         assert bottom[0].data.shape[0] == 1, \
             'Only single item batches are supported'
 
@@ -78,6 +81,8 @@ class AnchorTargetLayer(caffe.Layer):
         height, width = bottom[0].data.shape[-2:]
         # GT boxes (x1, y1, x2, y2, label)
         gt_boxes = bottom[1].data
+        # print("--------------------")
+        # print("GT_boxes: {}".format(str(gt_boxes)))
         # im_info
         im_info = bottom[2].data[0, :]
 
@@ -132,6 +137,14 @@ class AnchorTargetLayer(caffe.Layer):
         overlaps = bbox_overlaps(
             np.ascontiguousarray(anchors, dtype=np.float),
             np.ascontiguousarray(gt_boxes, dtype=np.float))
+
+        if DEBUG:
+            print "Anchors: {}".format(str(anchors))
+            print "GT_boxes: {}".format(str(gt_boxes))
+            print "------------------OVERLAPS--------------------------"
+            print "Bottom: {}, Top: {} ".format(str(bottom), str(top))
+            print "Shape: {}".format(str(np.array(overlaps).shape))
+            print str(overlaps)
         argmax_overlaps = overlaps.argmax(axis=1)
         max_overlaps = overlaps[np.arange(len(inds_inside)), argmax_overlaps]
         gt_argmax_overlaps = overlaps.argmax(axis=0)

@@ -42,11 +42,13 @@ class RoIDataLayer(caffe.Layer):
 
     def _get_next_minibatch_inds(self):
         """Return the roidb indices for the next minibatch."""
+
         if self._cur + cfg.TRAIN.IMS_PER_BATCH >= len(self._roidb):
             self._shuffle_roidb_inds()
 
         db_inds = self._perm[self._cur:self._cur + cfg.TRAIN.IMS_PER_BATCH]
         self._cur += cfg.TRAIN.IMS_PER_BATCH
+
         return db_inds
 
     def _get_next_minibatch(self):
@@ -60,6 +62,15 @@ class RoIDataLayer(caffe.Layer):
         else:
             db_inds = self._get_next_minibatch_inds()
             minibatch_db = [self._roidb[i] for i in db_inds]
+
+            # FIX - carried out fix to lib/datasets/coco.py
+            # gt_class_first = minibatch_db[0]['gt_classes'][0]
+            #
+            # while gt_class_first == 0:
+            #     db_inds = self._get_next_minibatch_inds()
+            #     minibatch_db = [self._roidb[i] for i in db_inds]
+            #     gt_class_first = minibatch_db[0]['gt_classes'][0]
+
             return get_minibatch(minibatch_db, self._num_classes)
 
     def set_roidb(self, roidb):
@@ -73,6 +84,7 @@ class RoIDataLayer(caffe.Layer):
                                                  self._num_classes)
             self._prefetch_process.start()
             # Terminate the child process when the parent exists
+
             def cleanup():
                 print 'Terminating BlobFetcher'
                 self._prefetch_process.terminate()
@@ -122,6 +134,7 @@ class RoIDataLayer(caffe.Layer):
             if cfg.TRAIN.BBOX_REG:
                 # bbox_targets blob: R bounding-box regression targets with 4
                 # targets per class
+                print "Layer {}, num_classes: {}".format(str(self), str(self._num_classes))
                 top[idx].reshape(1, self._num_classes * 4)
                 self._name_to_top_map['bbox_targets'] = idx
                 idx += 1

@@ -59,14 +59,20 @@ def parse_args():
 
 def combined_roidb(imdb_names):
     def get_roidb(imdb_name):
+
+        # COCO.py gets called here
         imdb = get_imdb(imdb_name)
+
         print 'Loaded dataset `{:s}` for training'.format(imdb.name)
+
         imdb.set_proposal_method(cfg.TRAIN.PROPOSAL_METHOD)
         print 'Set proposal method: {:s}'.format(cfg.TRAIN.PROPOSAL_METHOD)
+
         roidb = get_training_roidb(imdb)
         return roidb
 
     roidbs = [get_roidb(s) for s in imdb_names.split('+')]
+
     roidb = roidbs[0]
     if len(roidbs) > 1:
         for r in roidbs[1:]:
@@ -81,6 +87,10 @@ if __name__ == '__main__':
 
     print('Called with args:')
     print(args)
+
+    print "--------------------------------------------"
+    print "Iterations: {}".format(str(args.max_iters))
+    print "--------------------------------------------"
 
     if args.cfg_file is not None:
         cfg_from_file(args.cfg_file)
@@ -102,6 +112,7 @@ if __name__ == '__main__':
     caffe.set_device(args.gpu_id)
 
     imdb, roidb = combined_roidb(args.imdb_name)
+
     print '{:d} roidb entries'.format(len(roidb))
 
     output_dir = get_output_dir(imdb)
