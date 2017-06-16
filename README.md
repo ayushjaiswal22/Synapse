@@ -236,10 +236,35 @@ Test outputs are saved under:
 output/<experiment directory>/<dataset name>/<network snapshot name>/
 ```
 
+### Available Classes To Train On
+after downloading datasets and creating a symlink as described in "Beyond the demo: installation for training and testing models" you can run a script to find out about possible classes that you train on. The script is located at data/MSCOCO_API_categories.py
+For example : to get all classes with its ids (Note : you need the id of classes for later) call the following function : print_categories_from_name([]) and you will get the following output :
+
+```Shell
+./data/MSCOCO_API_categories.py
+
+{u'supercategory': u'person', u'id': 1, u'name': u'person'}
+{u'supercategory': u'vehicle', u'id': 2, u'name': u'bicycle'}
+{u'supercategory': u'vehicle', u'id': 3, u'name': u'car'}
+{u'supercategory': u'vehicle', u'id': 4, u'name': u'motorcycle'}
+{u'supercategory': u'vehicle', u'id': 5, u'name': u'airplane'}
+{u'supercategory': u'vehicle', u'id': 6, u'name': u'bus'}
+{u'supercategory': u'vehicle', u'id': 7, u'name': u'train'}
+{u'supercategory': u'vehicle', u'id': 8, u'name': u'truck'}
+{u'supercategory': u'vehicle', u'id': 9, u'name': u'boat'}
+{u'supercategory': u'outdoor', u'id': 10, u'name': u'traffic light'}
+{u'supercategory': u'outdoor', u'id': 11, u'name': u'fire hydrant'}
+{u'supercategory': u'outdoor', u'id': 13, u'name': u'stop sign'}
+...
+
+```
+
+as you can see, you'll get a list classes and its ids.
+
 ### run Demo :)
 
-To run the demo the following steps have to be prepared:
-After running the script data/scripts/fetch_faster_rcnn_models.sh you need to change the following line in tools/demo.py
+After finding out your classes you want to train on, you need to do the following changes to train the classes: 
 
+opne the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up in CAT_IDS with the ids you're interested in. 
 
-
+Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
