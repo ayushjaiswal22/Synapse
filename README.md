@@ -57,7 +57,18 @@ If you find Faster R-CNN useful in your research, please consider citing:
   WITH_PYTHON_LAYER := 1
   # Unrelatedly, it's also recommended that you use CUDNN
   USE_CUDNN := 1
+
+  # USE_PKG_CONFIG to produce necessary paths for libraries like opencv etc.
+  USE_PKG_CONFIG := 1 
+
+  # If you use Ubuntu you also need to include the library hdf5
+  INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial
+  
+  # If you have installed OpenCV Version 3 you need to uncomment the following line:
+  OPENCV_VERSION := 3
   ```
+
+
 
   You can download my [Makefile.config](https://dl.dropboxusercontent.com/s/6joa55k64xo2h68/Makefile.config?dl=0) for reference.
 2. Python packages you might not have: `cython`, `python-opencv`, `easydict`
@@ -157,6 +168,15 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
     ln -s $VOCdevkit VOCdevkit2007
     ```
     Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
+
+4. Create symlinks for the COCO dataset
+
+	```Shell
+    cd $FRCN_ROOT/data
+    ln -s <path_to_downloaded_MScoco_dataset> coco
+    ```
+    Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
+
 5. [Optional] follow similar steps to get PASCAL VOC 2010 and 2012
 6. [Optional] If you want to use COCO, please see some notes under `data/README.md`
 7. Follow the next sections to download pre-trained ImageNet models
@@ -215,3 +235,11 @@ Test outputs are saved under:
 ```
 output/<experiment directory>/<dataset name>/<network snapshot name>/
 ```
+
+### run Demo :)
+
+To run the demo the following steps have to be prepared:
+
+
+
+
