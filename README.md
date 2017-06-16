@@ -239,7 +239,7 @@ output/<experiment directory>/<dataset name>/<network snapshot name>/
 ### run Demo :)
 
 To run the demo the following steps have to be prepared:
-
+After running the script data/scripts/fetch_faster_rcnn_models.sh you need to change the following line in tools/demo.py
 
 
 
