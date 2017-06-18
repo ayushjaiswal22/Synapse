@@ -139,7 +139,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 
 2. Extract all of these tars into one directory named `VOCdevkit`
 
-	```Shell
+  ```Shell
 	tar xvf VOCtrainval_06-Nov-2007.tar
 	tar xvf VOCtest_06-Nov-2007.tar
 	tar xvf VOCdevkit_08-Jun-2007.tar
@@ -178,12 +178,12 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 
 1. Download the training, validation, test data and annotation file
 
-	```Shell
-	wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
-	wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
-	wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
+  ```Shell
+  wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
+  wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
+  wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
   wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
-	   ```
+  ```
 
 2. Extract all of these zips into one directory named `coco`
 
