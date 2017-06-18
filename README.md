@@ -43,8 +43,8 @@ If you find Faster R-CNN useful in your research, please consider citing:
 2. [Requirements: hardware](#requirements-hardware)
 3. [Basic installation](#installation-sufficient-for-the-demo)
 4. [Demo](#demo)
-5. [Beyond the demo: training and testing VOC](#beyond-the-demo-installation-for-training-and-testing-models-for-VOC)
-6. [Beyond the demo: training and testing MSCOCO](#beyond-the-demo-installation-for-training-and-testing-models-for-MSCOCO)
+5. [Beyond the demo: training and testing VOC](#beyond-the-demo-installation-for-training-and-testing-models-for-voc)
+6. [Beyond the demo: training and testing MSCOCO](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco)
 7. [Usage](#usage)
 
 ### Requirements: software
@@ -179,11 +179,9 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 1. Download the training, validation, test data and annotation file
 
 	```Shell
-  # datasets
 	wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
 	wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
 	wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
-  # annotations
   wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
 	```
 
@@ -203,7 +201,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
   	coco/images/<unziped_image_val>                    # mscoco images, val.
   	coco/images/<unziped_image_test>                   # mscoco images, test
     coco/annotations/<unziped_train_val>               # annotation file
-  	```
+  ```
 
 ### Download pre-trained ImageNet models
 
