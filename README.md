@@ -51,7 +51,7 @@ If you find Faster R-CNN useful in your research, please consider citing:
 
 ### Requirements: software
 
-1. Requirements for `Caffe` and `pycaffe` (see: [Caffe installation instructions](http://caffe.berkeleyvision.org/installation.html))
+1. Requirements for  `Caffe` and `pycaffe` (see: [Caffe installation instructions](http://caffe.berkeleyvision.org/installation.html))
 
   **Note:** Caffe *must* be built with support for Python layers!
 
