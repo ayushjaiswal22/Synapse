@@ -85,7 +85,7 @@ If you find Faster R-CNN useful in your research, please consider citing:
 
 1. Clone the Faster R-CNN repository
   ```Shell
-  # Make sure to clone with --recursive
+  # clone
   git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn --branch no_submodule
   ```
 
@@ -202,6 +202,55 @@ coco/images/<unziped_image_val>                    # mscoco images, val.
 coco/images/<unziped_image_test>                   # mscoco images, test
 coco/annotations/<unziped_train_val>               # annotation file
 ```
+4. Create symlink for the MSCOCO dataset
+```Shell
+cd $FRCN_ROOT/data
+ln -s <path_to_downloaded_MSCOCO_dataset> coco
+```
+
+### Available Classes To Train On (MSCOCO)
+after downloading datasets and creating a symlink as described in [Beyond the demo (MSCOCO)](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco)* you can run a script to find out about possible classes you can train on.
+The script is located at data/MSCOCO_API_categories.py
+
+For example : to get all classes with its ids (Note : you need the id of classes for later) call the following function : print_categories_from_name([]) and you will get the following output :
+
+```Shell
+./data/MSCOCO_API_categories.py
+
+{u'supercategory': u'person', u'id': 1, u'name': u'person'}
+{u'supercategory': u'vehicle', u'id': 2, u'name': u'bicycle'}
+{u'supercategory': u'vehicle', u'id': 3, u'name': u'car'}
+{u'supercategory': u'vehicle', u'id': 4, u'name': u'motorcycle'}
+{u'supercategory': u'vehicle', u'id': 5, u'name': u'airplane'}
+{u'supercategory': u'vehicle', u'id': 6, u'name': u'bus'}
+{u'supercategory': u'vehicle', u'id': 7, u'name': u'train'}
+{u'supercategory': u'vehicle', u'id': 8, u'name': u'truck'}
+{u'supercategory': u'vehicle', u'id': 9, u'name': u'boat'}
+{u'supercategory': u'outdoor', u'id': 10, u'name': u'traffic light'}
+{u'supercategory': u'outdoor', u'id': 11, u'name': u'fire hydrant'}
+{u'supercategory': u'outdoor', u'id': 13, u'name': u'stop sign'}
+...
+```
+
+### Train on custom classes
+
+After finding out your classes you want to train on [(Available Classes To Train On (MSCOCO)](#)*, you need to do the following changes to train the classes:
+
+open the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up CAT_IDS with the ids you're interested in.
+
+Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
+
+```Shell
+cd $FRCN_ROOT
+./expriments/scripts/faster_rcnn_end2end.sh 0 VGG_CNN_M_1024 coco
+```
+
+after creating model with specific classes you are interested in, you need only to change the model name in tools/demo.py, see the variable NETS. Then run the demo script :
+
+```Shell
+./tools/demo.py
+```
+
 
 ### Download pre-trained ImageNet models
 
@@ -258,35 +307,3 @@ Test outputs are saved under:
 output/<experiment directory>/<dataset name>/<network snapshot name>/
 ```
 
-### Available Classes To Train On
-after downloading datasets and creating a symlink as described in "Beyond the demo: installation for training and testing models" you can run a script to find out about possible classes that you train on. The script is located at data/MSCOCO_API_categories.py
-For example : to get all classes with its ids (Note : you need the id of classes for later) call the following function : print_categories_from_name([]) and you will get the following output :
-
-```Shell
-./data/MSCOCO_API_categories.py
-
-{u'supercategory': u'person', u'id': 1, u'name': u'person'}
-{u'supercategory': u'vehicle', u'id': 2, u'name': u'bicycle'}
-{u'supercategory': u'vehicle', u'id': 3, u'name': u'car'}
-{u'supercategory': u'vehicle', u'id': 4, u'name': u'motorcycle'}
-{u'supercategory': u'vehicle', u'id': 5, u'name': u'airplane'}
-{u'supercategory': u'vehicle', u'id': 6, u'name': u'bus'}
-{u'supercategory': u'vehicle', u'id': 7, u'name': u'train'}
-{u'supercategory': u'vehicle', u'id': 8, u'name': u'truck'}
-{u'supercategory': u'vehicle', u'id': 9, u'name': u'boat'}
-{u'supercategory': u'outdoor', u'id': 10, u'name': u'traffic light'}
-{u'supercategory': u'outdoor', u'id': 11, u'name': u'fire hydrant'}
-{u'supercategory': u'outdoor', u'id': 13, u'name': u'stop sign'}
-...
-
-```
-
-as you can see, you'll get a list classes and its ids.
-
-### run Demo :)
-
-After finding out your classes you want to train on, you need to do the following changes to train the classes:
-
-opne the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up in CAT_IDS with the ids you're interested in.
-
-Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
