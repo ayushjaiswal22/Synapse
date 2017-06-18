@@ -43,8 +43,9 @@ If you find Faster R-CNN useful in your research, please consider citing:
 2. [Requirements: hardware](#requirements-hardware)
 3. [Basic installation](#installation-sufficient-for-the-demo)
 4. [Demo](#demo)
-5. [Beyond the demo: training and testing](#beyond-the-demo-installation-for-training-and-testing-models)
-6. [Usage](#usage)
+5. [Beyond the demo: training and testing VOC](#beyond-the-demo-installation-for-training-and-testing-models-for-VOC)
+6. [Beyond the demo: training and testing MSCOCO](#beyond-the-demo-installation-for-training-and-testing-models-for-MSCOCO)
+7. [Usage](#usage)
 
 ### Requirements: software
 
@@ -127,7 +128,7 @@ cd $FRCN_ROOT
 ```
 The demo performs detection using a VGG16 network trained for detection on PASCAL VOC 2007.
 
-### Beyond the demo: installation for training and testing models (VOC dataset)
+### Beyond the demo: installation for training and testing models for VOC
 1. Download the training, validation, test data and VOCdevkit
 
 	```Shell
@@ -173,9 +174,9 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 6. [Optional] If you want to use COCO, please see some notes under `data/README.md`
 7. Follow the next sections to download pre-trained ImageNet models
 
-### Beyond the demo: installation for training and testing models (MSCOCO dataset)
+### Beyond the demo: installation for training and testing models for MSCOCO
 
-1. Download the training, validation, test data and annotation file :
+1. Download the training, validation, test data and annotation file
 
 	```Shell
   # datasets
