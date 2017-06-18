@@ -152,14 +152,14 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
   	$VOCdevkit/VOCcode/                   # VOC utility code
   	$VOCdevkit/VOC2007                    # image sets, annotations, etc.
   	# ... and several other directories ...
-  	```
+  ```
 
 4. Create symlinks for the PASCAL VOC dataset
 
 	```Shell
     cd $FRCN_ROOT/data
     ln -s $VOCdevkit VOCdevkit2007
-    ```
+  ```
     Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
 
 4. Create symlinks for the COCO dataset
@@ -167,7 +167,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 	```Shell
     cd $FRCN_ROOT/data
     ln -s <path_to_downloaded_MScoco_dataset> coco
-    ```
+  ```
     Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
 
 5. [Optional] follow similar steps to get PASCAL VOC 2010 and 2012
@@ -187,12 +187,12 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 
 2. Extract all of these zips into one directory named `coco`
 
-	```Shell
+  ```Shell
 	unzip train2014.zip
 	unzip val2014.zip
 	unzip test2014.zip
   unzip instances_train-val2014.zip
-	   ```
+  ```
 3. It should have this basic structure
 
 	```Shell
@@ -201,7 +201,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
   	coco/images/<unziped_image_val>                    # mscoco images, val.
   	coco/images/<unziped_image_test>                   # mscoco images, test
     coco/annotations/<unziped_train_val>               # annotation file
-      ```
+    ```
 
 ### Download pre-trained ImageNet models
 
