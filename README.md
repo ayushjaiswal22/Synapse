@@ -183,7 +183,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 	wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
 	wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
   wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
-	```
+	   ```
 
 2. Extract all of these zips into one directory named `coco`
 
@@ -192,7 +192,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 	unzip val2014.zip
 	unzip test2014.zip
   unzip instances_train-val2014.zip
-	```
+	   ```
 3. It should have this basic structure
 
 	```Shell
@@ -201,7 +201,7 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
   	coco/images/<unziped_image_val>                    # mscoco images, val.
   	coco/images/<unziped_image_test>                   # mscoco images, test
     coco/annotations/<unziped_train_val>               # annotation file
-  ```
+      ```
 
 ### Download pre-trained ImageNet models
 
