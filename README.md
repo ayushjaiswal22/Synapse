@@ -45,7 +45,9 @@ If you find Faster R-CNN useful in your research, please consider citing:
 4. [Demo](#demo)
 5. [Beyond the demo: training and testing VOC](#beyond-the-demo-installation-for-training-and-testing-models-for-voc)
 6. [Beyond the demo: training and testing MSCOCO](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco)
-7. [Usage](#usage)
+7. [Available Classes to Train On (MSCOCO)](#available-classes-to-train-on-mscoco)
+8. [Train on custom classes](#train-on-custom-classes)
+9. [Usage](#usage)
 
 ### Requirements: software
 
