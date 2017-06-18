@@ -209,7 +209,7 @@ ln -s <path_to_downloaded_MSCOCO_dataset> coco
 ```
 
 ### Available Classes To Train On (MSCOCO)
-after downloading datasets and creating a symlink as described in [Beyond the demo (MSCOCO)](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco)* you can run a script to find out about possible classes you can train on.
+after downloading datasets and creating a symlink as described in [Beyond the demo (MSCOCO)](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco) you can run a script to find out about possible classes you can train on.
 The script is located at data/MSCOCO_API_categories.py
 
 For example : to get all classes with its ids (Note : you need the id of classes for later) call the following function : print_categories_from_name([]) and you will get the following output :
@@ -234,7 +234,7 @@ For example : to get all classes with its ids (Note : you need the id of classes
 
 ### Train on custom classes
 
-After finding out your classes you want to train on [(Available Classes To Train On (MSCOCO)](#)*, you need to do the following changes to train the classes:
+After finding out your classes you want to train on [(Available Classes To Train On (MSCOCO)](#available-classes-to-train-on-mscoco), you need to do the following changes to train the classes:
 
 open the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up CAT_IDS with the ids you're interested in.
 
