@@ -131,43 +131,43 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 ### Beyond the demo: installation for training and testing models for VOC
 1. Download the training, validation, test data and VOCdevkit
 
-	```Shell
-	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtrainval_06-Nov-2007.tar
-	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar
-	wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCdevkit_08-Jun-2007.tar
-	```
+```Shell
+wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtrainval_06-Nov-2007.tar
+wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar
+wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCdevkit_08-Jun-2007.tar
+```
 
 2. Extract all of these tars into one directory named `VOCdevkit`
 
-  ```Shell
-	tar xvf VOCtrainval_06-Nov-2007.tar
-	tar xvf VOCtest_06-Nov-2007.tar
-	tar xvf VOCdevkit_08-Jun-2007.tar
-	```
+```Shell
+tar xvf VOCtrainval_06-Nov-2007.tar
+tar xvf VOCtest_06-Nov-2007.tar
+tar xvf VOCdevkit_08-Jun-2007.tar
+```
 
 3. It should have this basic structure
 
-	```Shell
-  	$VOCdevkit/                           # development kit
-  	$VOCdevkit/VOCcode/                   # VOC utility code
-  	$VOCdevkit/VOC2007                    # image sets, annotations, etc.
-  	# ... and several other directories ...
-  ```
+```Shell
+$VOCdevkit/                           # development kit
+$VOCdevkit/VOCcode/                   # VOC utility code
+$VOCdevkit/VOC2007                    # image sets, annotations, etc.
+# ... and several other directories ...
+```
 
 4. Create symlinks for the PASCAL VOC dataset
 
-	```Shell
-    cd $FRCN_ROOT/data
-    ln -s $VOCdevkit VOCdevkit2007
-  ```
+```Shell
+cd $FRCN_ROOT/data
+ln -s $VOCdevkit VOCdevkit2007
+```
     Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
 
-4. Create symlinks for the COCO dataset
+5. Create symlinks for the COCO dataset
 
-	```Shell
-    cd $FRCN_ROOT/data
-    ln -s <path_to_downloaded_MScoco_dataset> coco
-  ```
+```Shell
+cd $FRCN_ROOT/data
+ln -s <path_to_downloaded_MScoco_dataset> coco
+```
     Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
 
 5. [Optional] follow similar steps to get PASCAL VOC 2010 and 2012
@@ -178,30 +178,30 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 
 1. Download the training, validation, test data and annotation file
 
-  ```Shell
-  wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
-  wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
-  wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
-  wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
-  ```
+```Shell
+wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
+wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
+wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
+wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
+```
 
 2. Extract all of these zips into one directory named `coco`
 
-  ```Shell
-	unzip train2014.zip
-	unzip val2014.zip
-	unzip test2014.zip
-  unzip instances_train-val2014.zip
-  ```
+```Shell
+unzip train2014.zip
+unzip val2014.zip
+unzip test2014.zip
+unzip instances_train-val2014.zip
+```
 3. It should have this basic structure
 
-	```Shell
-  	coco/                           # coco folder
-  	coco/images/<unziped_image_train>                   # mscoco images, train
-  	coco/images/<unziped_image_val>                    # mscoco images, val.
-  	coco/images/<unziped_image_test>                   # mscoco images, test
-    coco/annotations/<unziped_train_val>               # annotation file
-    ```
+```Shell
+coco/                           # coco folder
+coco/images/<unziped_image_train>                   # mscoco images, train
+coco/images/<unziped_image_val>                    # mscoco images, val.
+coco/images/<unziped_image_test>                   # mscoco images, test
+coco/annotations/<unziped_train_val>               # annotation file
+```
 
 ### Download pre-trained ImageNet models
 
