@@ -59,11 +59,11 @@ If you find Faster R-CNN useful in your research, please consider citing:
   USE_CUDNN := 1
 
   # USE_PKG_CONFIG to produce necessary paths for libraries like opencv etc.
-  USE_PKG_CONFIG := 1 
+  USE_PKG_CONFIG := 1
 
   # If you use Ubuntu you also need to include the library hdf5
   INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial
-  
+
   # If you have installed OpenCV Version 3 you need to uncomment the following line:
   OPENCV_VERSION := 3
   ```
@@ -85,18 +85,10 @@ If you find Faster R-CNN useful in your research, please consider citing:
 1. Clone the Faster R-CNN repository
   ```Shell
   # Make sure to clone with --recursive
-  git clone --recursive https://github.com/rbgirshick/py-faster-rcnn.git
+  git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn --branch no_submodule
   ```
 
 2. We'll call the directory that you cloned Faster R-CNN into `FRCN_ROOT`
-
-   *Ignore notes 1 and 2 if you followed step 1 above.*
-
-   **Note 1:** If you didn't clone Faster R-CNN with the `--recursive` flag, then you'll need to manually clone the `caffe-fast-rcnn` submodule:
-    ```Shell
-    git submodule update --init --recursive
-    ```
-    **Note 2:** The `caffe-fast-rcnn` submodule needs to be on the `faster-rcnn` branch (or equivalent detached state). This will happen automatically *if you followed step 1 instructions*.
 
 3. Build the Cython modules
     ```Shell
@@ -135,7 +127,7 @@ cd $FRCN_ROOT
 ```
 The demo performs detection using a VGG16 network trained for detection on PASCAL VOC 2007.
 
-### Beyond the demo: installation for training and testing models
+### Beyond the demo: installation for training and testing models (VOC dataset)
 1. Download the training, validation, test data and VOCdevkit
 
 	```Shell
@@ -180,6 +172,37 @@ The demo performs detection using a VGG16 network trained for detection on PASCA
 5. [Optional] follow similar steps to get PASCAL VOC 2010 and 2012
 6. [Optional] If you want to use COCO, please see some notes under `data/README.md`
 7. Follow the next sections to download pre-trained ImageNet models
+
+### Beyond the demo: installation for training and testing models (MSCOCO dataset)
+
+1. Download the training, validation, test data and annotation file :
+
+	```Shell
+  # datasets
+	wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
+	wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
+	wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
+  # annotations
+  wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
+	```
+
+2. Extract all of these zips into one directory named `coco`
+
+	```Shell
+	unzip train2014.zip
+	unzip val2014.zip
+	unzip test2014.zip
+  unzip instances_train-val2014.zip
+	```
+3. It should have this basic structure
+
+	```Shell
+  	coco/                           # coco folder
+  	coco/images/<unziped_image_train>                   # mscoco images, train
+  	coco/images/<unziped_image_val>                    # mscoco images, val.
+  	coco/images/<unziped_image_test>                   # mscoco images, test
+    coco/annotations/<unziped_train_val>               # annotation file
+  	```
 
 ### Download pre-trained ImageNet models
 
@@ -263,8 +286,8 @@ as you can see, you'll get a list classes and its ids.
 
 ### run Demo :)
 
-After finding out your classes you want to train on, you need to do the following changes to train the classes: 
+After finding out your classes you want to train on, you need to do the following changes to train the classes:
 
-opne the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up in CAT_IDS with the ids you're interested in. 
+opne the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up in CAT_IDS with the ids you're interested in.
 
 Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
