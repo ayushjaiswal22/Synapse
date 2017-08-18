@@ -1,5 +1,5 @@
 ### Fork of py-faster-rcnn
-We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. For quick introduction/license/etc. please see the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn).
+We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. For quick introduction/license/etc. please see the original repository of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn).
 
 The changes were concerned about fine-tuning deep neural networks:
 * automated change of network-layers if less classes are considered compared to the original network
@@ -93,7 +93,7 @@ The changes were concerned about fine-tuning deep neural networks:
 
 ### Demo
 
-*After successfully completing [basic installation](#installation-sufficient-for-the-demo)*, you'll be ready to run the demo.
+*After successfully completing [basic installation](#installation)*, you'll be ready to run the demo.
 
 To run the demo
 ```Shell
@@ -150,7 +150,7 @@ ln -s <path_to_downloaded_MScoco_dataset> coco
 
 ### Beyond the demo: installation for training and testing models for MSCOCO
 
-1. Download the training, validation, test data and annotation file
+1. Download the training, validation, test data and annotation file ( It doesn't matter where you download these files. For flexibility you will symlink these files)
 
 ```Shell
 wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
@@ -210,7 +210,7 @@ For example : to get all classes with its ids (Note : you need the id of classes
 
 After finding out your classes you want to train on [(Available Classes To Train On (MSCOCO)](#available-classes-to-train-on-mscoco), you need to do the following changes to train the classes:
 
-open the file : experiments/cfgs/faster_rcnn_end2end.yml and fill up CAT_IDS with the ids you're interested in.
+open the file : **experiments/cfgs/faster_rcnn_end2end.yml** and fill up CAT_IDS with the ids you're interested in.
 
 Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
 
@@ -219,7 +219,14 @@ cd $FRCN_ROOT
 ./expriments/scripts/faster_rcnn_end2end.sh 0 VGG_CNN_M_1024 coco
 ```
 
-after creating model with specific classes you are interested in, you need only to change the model name in tools/demo.py, see the variable NETS. Then run the demo script :
+after creating model with specific classes you are interested in, you need to change the model name in tools/demo.py, see the variable called **NETS** and its key **vgg16**. 
+
+```Shell
+NETS = {'vgg16': ('VGG16',
+                  'YOUR_CUSTOM_MODEL.caffemodel'),
+```
+
+Then run the demo script :
 
 ```Shell
 ./tools/demo.py
