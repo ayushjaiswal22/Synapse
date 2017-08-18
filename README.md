@@ -1,5 +1,5 @@
 ### Fork of py-faster-rcnn
-We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. The overall changes are marginal, therefore, please refer to the original documentation for setting up py-faster-rcnn.
+We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. 
 
 The changes were concerned about fine-tuning deep neural networks:
 * automated change of network-layers if less classes are considered compared to the original network
