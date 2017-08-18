@@ -1,50 +1,10 @@
 ### Fork of py-faster-rcnn
-We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. For quick introduction please see the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn).
+We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. For quick introduction/license/etc. please see the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn).
 
 The changes were concerned about fine-tuning deep neural networks:
 * automated change of network-layers if less classes are considered compared to the original network
 * more convenient selection of training classes from ms coco
 
-
-### Disclaimer
-
-The official Faster R-CNN code (written in MATLAB) is available [here](https://github.com/ShaoqingRen/faster_rcnn).
-If your goal is to reproduce the results in our NIPS 2015 paper, please use the [official code](https://github.com/ShaoqingRen/faster_rcnn).
-
-This repository contains a Python *reimplementation* of the MATLAB code.
-This Python implementation is built on a fork of [Fast R-CNN](https://github.com/rbgirshick/fast-rcnn).
-There are slight differences between the two implementations.
-In particular, this Python port
- - is ~10% slower at test-time, because some operations execute on the CPU in Python layers (e.g., 220ms / image vs. 200ms / image for VGG16)
- - gives similar, but not exactly the same, mAP as the MATLAB version
- - is *not compatible* with models trained using the MATLAB code due to the minor implementation differences
- - **includes approximate joint training** that is 1.5x faster than alternating optimization (for VGG16) -- see these [slides](https://www.dropbox.com/s/xtr4yd4i5e0vw8g/iccv15_tutorial_training_rbg.pdf?dl=0) for more information
-
-# *Faster* R-CNN: Towards Real-Time Object Detection with Region Proposal Networks
-
-By Shaoqing Ren, Kaiming He, Ross Girshick, Jian Sun (Microsoft Research)
-
-This Python implementation contains contributions from Sean Bell (Cornell) written during an MSR internship.
-
-Please see the official [README.md](https://github.com/ShaoqingRen/faster_rcnn/blob/master/README.md) for more details.
-
-Faster R-CNN was initially described in an [arXiv tech report](http://arxiv.org/abs/1506.01497) and was subsequently published in NIPS 2015.
-
-### License
-
-Faster R-CNN is released under the MIT License (refer to the LICENSE file for details).
-
-### Citing Faster R-CNN
-
-If you find Faster R-CNN useful in your research, please consider citing:
-
-    @inproceedings{renNIPS15fasterrcnn,
-        Author = {Shaoqing Ren and Kaiming He and Ross Girshick and Jian Sun},
-        Title = {Faster {R-CNN}: Towards Real-Time Object Detection
-                 with Region Proposal Networks},
-        Booktitle = {Advances in Neural Information Processing Systems ({NIPS})},
-        Year = {2015}
-    }
 
 ### Contents
 1. [Requirements: software](#requirements-software)
