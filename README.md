@@ -288,3 +288,16 @@ Test outputs are saved under:
 output/<experiment directory>/<dataset name>/<network snapshot name>/
 ```
 
+### References
+
+We especially appreciate a reference in your paper, should you use our code for a research project:
+
+```
+	@misc{py-faster-rcnn-ft,
+		title = {py-faster-rcnn-ft: Custom Training of Deep Learning Models for Image Classification with py-faster-rcnn},
+		author={Sonntag, Daniel and Barz, Michael and Stauden, Sven and Rahmani, Vahid},
+		publisher={DFKI GmbH},
+		url={http://dfki.de/smartfactories/?page_id=616},
+		year={2017}
+	}
+```
