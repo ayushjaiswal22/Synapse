@@ -21,6 +21,7 @@ The changes were concerned about fine-tuning deep neural networks:
 
 1. Requirements for  `Caffe` and `pycaffe` (see: [Caffe installation instructions](http://caffe.berkeleyvision.org/installation.html))
 
+  **Note:** You don't need to install pycaffe separately, we have included pycaffe in our repository with small changes needed for our research. Just see if you have necessary libraries for install pycaffe 
   **Note:** Caffe *must* be built with support for Python layers!
 
   ```make
