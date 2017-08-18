@@ -21,7 +21,7 @@ The changes were concerned about fine-tuning deep neural networks:
 
 1. Requirements for  `Caffe` and `pycaffe` (see: [Caffe installation instructions](http://caffe.berkeleyvision.org/installation.html))
 
-  **Note:** You don't need to install pycaffe separately, we have included pycaffe in our repository with small changes needed for our research. Just see if you have necessary libraries for install pycaffe 
+  **Note:** You don't need to install pycaffe separately, we have included pycaffe in our repository with small changes needed for our research. Just check if you have necessary libraries for installing pycaffe 
   
   **Note:** Caffe *must* be built with support for Python layers!
 
@@ -45,6 +45,7 @@ The changes were concerned about fine-tuning deep neural networks:
 
   You can download my [Makefile.config](https://dl.dropboxusercontent.com/s/6joa55k64xo2h68/Makefile.config?dl=0) for reference.
 2. Python packages you might not have: `cython`, `python-opencv`, `easydict`
+
 3. [Optional] MATLAB is required for **official** PASCAL VOC evaluation only. The code now includes unofficial Python evaluation code.
 
 ### Requirements: hardware
