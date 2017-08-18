@@ -44,6 +44,7 @@ The changes were concerned about fine-tuning deep neural networks:
 
 
   You can download my [Makefile.config](https://dl.dropboxusercontent.com/s/6joa55k64xo2h68/Makefile.config?dl=0) for reference.
+
 2. Python packages you might not have: `cython`, `python-opencv`, `easydict`
 
 3. [Optional] MATLAB is required for **official** PASCAL VOC evaluation only. The code now includes unofficial Python evaluation code.
@@ -54,7 +55,7 @@ The changes were concerned about fine-tuning deep neural networks:
 2. For training Fast R-CNN with VGG16, you'll need a K40 (~11G of memory)
 3. For training the end-to-end version of Faster R-CNN with VGG16, 3G of GPU memory is sufficient (using CUDNN)
 
-### Installation (sufficient for the demo)
+### Installation
 
 1. Clone the Faster R-CNN repository
   ```Shell
