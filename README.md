@@ -9,7 +9,7 @@ The changes were concerned about finetuning (hence -ft) deep neural networks:
 ### Contents
 1. [Requirements: software](#requirements-software)
 2. [Requirements: hardware](#requirements-hardware)
-3. [Basic installation](#installation-sufficient-for-the-demo)
+3. [Installation](#installation)
 4. [Demo](#demo)
 5. [Beyond the demo: training and testing VOC](#beyond-the-demo-installation-for-training-and-testing-models-for-voc)
 6. [Beyond the demo: training and testing MSCOCO](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco)
@@ -19,36 +19,10 @@ The changes were concerned about finetuning (hence -ft) deep neural networks:
 
 ### Requirements: software
 
-1. Requirements for  `Caffe` and `pycaffe` (see: [Caffe installation instructions](http://caffe.berkeleyvision.org/installation.html))
+You can't use the distribution version of caffe or protobuf, those need to be compiled as some code needed special adaptations.
 
-  **Note:** You don't need to install pycaffe separately, we included pycaffe in our repository with small changes needed for our research([cuDNN v5](https://github.com/rbgirshick/caffe-fast-rcnn/issues/14)). Just check if you have necessary libraries for installing pycaffe 
+  **Note:** You don't need to install pycaffe separately, we included pycaffe in our repository with small changes needed for our research([cuDNN v5](https://github.com/rbgirshick/caffe-fast-rcnn/issues/14)).
   
-  **Note:** Caffe *must* be built with support for Python layers!
-
-  ```make
-  # In your Makefile.config, make sure to have this line uncommented
-  WITH_PYTHON_LAYER := 1
-  # Unrelatedly, it's also recommended that you use CUDNN
-  USE_CUDNN := 1
-
-  # USE_PKG_CONFIG to produce necessary paths for libraries like opencv etc.
-  USE_PKG_CONFIG := 1
-
-  # If you use Ubuntu you also need to include the library hdf5
-  INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include /usr/include/hdf5/serial
-
-  # If you have installed OpenCV Version 3 you need to uncomment the following line:
-  OPENCV_VERSION := 3
-  ```
-
-
-
-  You can download my [Makefile.config](https://dl.dropboxusercontent.com/s/6joa55k64xo2h68/Makefile.config?dl=0) for reference.
-
-2. Python packages you might not have: `cython`, `python-opencv`, `easydict`
-
-3. [Optional] MATLAB is required for **official** PASCAL VOC evaluation only. The code now includes unofficial Python evaluation code.
-
 ### Requirements: hardware
 
 1. For training smaller networks (ZF, VGG_CNN_M_1024) a good GPU (e.g., Titan, K20, K40, ...) with at least 3G of memory suffices
@@ -57,38 +31,50 @@ The changes were concerned about finetuning (hence -ft) deep neural networks:
 
 ### Installation
 
-1. Clone the Faster R-CNN repository
+Ubuntu 17.04
+------------
+
+1. Install dependencies (you need a root shell):
   ```Shell
-  # clone
-  git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn
-  ```
+apt install libboost-dev-all libboost-dev libgoogle-glog-dev libgflags-dev libsnappy-dev libatlas-dev libatlas3-base libatlas-base-dev libhdf5-serial-dev liblmdb-dev libleveldb-dev libopencv-dev g++-5 nvidia-cuda-toolkit cython python-numpy python-setuptools
+    ```
+2. Append to /etc/bash.bashrc (and execute in the shell for immediate effect):
+```
+export CUDAHOME=/usr/lib/nvidia-cuda-toolkit/
+```
 
-2. We'll call the directory that you cloned Faster R-CNN into `FRCN_ROOT`
+3. Download https://developer.nvidia.com/compute/machine-learning/cudnn/secure/v7/prod/8.0_20170802/cudnn-8.0-linux-x64-v7-tgz (requires login)
+  ```Shell
+tar -xvzf cudnn-8.0-linux-x64-v7.tgz -C /usr/local
+mkdir /usr/local/cuda/bin;ln -s /usr/bin/nvcc /usr/local/cuda/bin/nvcc
 
-3. Build the Cython modules
+```
+4. We need to compile protobuf with gcc-5:
+  ```Shell
+git clone https://github.com/google/protobuf.git
+cd protobuf
+./autogen.sh
+./configure --prefix=/usr CC=/usr/bin/gcc-5
+make -j8
+make check
+make install
+```
+5. Build Cython modules, Caffe, pycaffe (was tested with Ubuntu 17.04, in case of errors consult http://caffe.berkeleyvision.org/installation.html)
+  ```Shell
+git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft
+cd py-faster-rcnn-ft/lib
+make -j8
+cd ../caffe-fast-rcnn
+make -j8
+make pycaffe
+```
+6. Download pre-computed Faster R-CNN detectors
     ```Shell
-    cd $FRCN_ROOT/lib
-    make
+cd ..
+data/scripts/fetch_faster_rcnn_models.sh
     ```
 
-4. Build Caffe and pycaffe
-    ```Shell
-    cd $FRCN_ROOT/caffe-fast-rcnn
-    # Now follow the Caffe installation instructions here:
-    #   http://caffe.berkeleyvision.org/installation.html
-
-    # If you're experienced with Caffe and have all of the requirements installed
-    # and your Makefile.config in place, then simply do:
-    make -j8 && make pycaffe
-    ```
-
-5. Download pre-computed Faster R-CNN detectors
-    ```Shell
-    cd $FRCN_ROOT
-    ./data/scripts/fetch_faster_rcnn_models.sh
-    ```
-
-    This will populate the `$FRCN_ROOT/data` folder with `faster_rcnn_models`. See `data/README.md` for details.
+    This will populate the `data` folder with `faster_rcnn_models`. See `data/README.md` for details.
     These models were trained on VOC 2007 trainval.
 
 ### Demo
@@ -97,8 +83,7 @@ The changes were concerned about finetuning (hence -ft) deep neural networks:
 
 To run the demo
 ```Shell
-cd $FRCN_ROOT
-./tools/demo.py
+tools/demo.py
 ```
 The demo performs detection using a VGG16 network trained for detection on PASCAL VOC 2007.
 
