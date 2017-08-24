@@ -24,7 +24,6 @@ You can't use the distribution version of caffe or protobuf, those need to be co
   **Note:** You don't need to install pycaffe separately, we included pycaffe in our repository with small changes needed for our research([cuDNN v5](https://github.com/rbgirshick/caffe-fast-rcnn/issues/14)).
   
 ### Requirements: hardware
-
 1. For training smaller networks (ZF, VGG_CNN_M_1024) a good GPU (e.g., Titan, K20, K40, ...) with at least 3G of memory suffices
 2. For training Fast R-CNN with VGG16, you'll need a K40 (~11G of memory)
 3. For training the end-to-end version of Faster R-CNN with VGG16, 3G of GPU memory is sufficient (using CUDNN)
@@ -34,7 +33,7 @@ You can't use the distribution version of caffe or protobuf, those need to be co
 #### Ubuntu 17.04
 Follow these detailed installation instructions to get the software running with CUDA.
 
-0. Install Ubuntu 17.04 and use ** Additional Drivers ** to activate the Nvidia binary driver (nvidia-375)
+0. Install Ubuntu 17.04 and use the **Additional Drivers** app to activate the Nvidia binary driver (nvidia-375)
 
 1. Install dependencies (you need a root shell):
 ```Shell
