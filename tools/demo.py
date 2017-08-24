@@ -26,9 +26,9 @@ See README.md for installation instructions before running.
 -- FIXED VERSION by Vahid Rahmani and Sven Stauden (DFKI) --
 To run the demo on your data, please change the following lines:
 
-- line 36: Write the category IDs of the classes you want the demo run on into the list category_ids. Leave the
+- line 156: Write the category IDs of the classes you want the demo run on into the list category_ids. Leave the
   list empty if you want to run the demo on all MSCoco categories
-- line 44: Give the filename of the trained model (.caffemodel file)
+- line 52: Give the filename of the trained model (.caffemodel file)
 ------------------------------------------------------------
 
 """

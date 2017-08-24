@@ -35,11 +35,12 @@ Ubuntu 17.04
 ------------
 
 1. Install dependencies (you need a root shell):
-  ```Shell
-apt install libboost-dev-all libboost-dev libgoogle-glog-dev libgflags-dev libsnappy-dev libatlas-dev libatlas3-base libatlas-base-dev libhdf5-serial-dev liblmdb-dev libleveldb-dev libopencv-dev g++-5 nvidia-cuda-toolkit cython python-numpy python-setuptools
-    ```
-2. Append to /etc/bash.bashrc (and execute in the shell for immediate effect):
+```Shell
+apt install python-pip python-opencv libboost-dev-all libboost-dev libgoogle-glog-dev libgflags-dev libsnappy-dev libatlas-dev libatlas4-base libatlas-base-dev libhdf5-serial-dev liblmdb-dev libleveldb-dev libopencv-dev g++-5 nvidia-cuda-toolkit cython python-numpy python-setuptools python-protobuf python-skimage python-tk python-yaml
+pip2 install easydict
 ```
+2. Append to /etc/bash.bashrc (and execute in the shell for immediate effect):
+```Shell
 export CUDAHOME=/usr/lib/nvidia-cuda-toolkit/
 ```
 
@@ -47,10 +48,12 @@ export CUDAHOME=/usr/lib/nvidia-cuda-toolkit/
   ```Shell
 tar -xvzf cudnn-8.0-linux-x64-v7.tgz -C /usr/local
 mkdir /usr/local/cuda/bin;ln -s /usr/bin/nvcc /usr/local/cuda/bin/nvcc
+echo /usr/local/cuda/lib64/ > /etc/ld.so.conf.d/cuda.conf
+ldconfig
 
 ```
 4. We need to compile protobuf with gcc-5:
-  ```Shell
+```Shell
 git clone https://github.com/google/protobuf.git
 cd protobuf
 ./autogen.sh
@@ -60,7 +63,7 @@ make check
 make install
 ```
 5. Build Cython modules, Caffe, pycaffe (was tested with Ubuntu 17.04, in case of errors consult http://caffe.berkeleyvision.org/installation.html)
-  ```Shell
+```Shell
 git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft
 cd py-faster-rcnn-ft/lib
 make -j8
@@ -69,10 +72,10 @@ make -j8
 make pycaffe
 ```
 6. Download pre-computed Faster R-CNN detectors
-    ```Shell
+```Shell
 cd ..
 data/scripts/fetch_faster_rcnn_models.sh
-    ```
+```
 
     This will populate the `data` folder with `faster_rcnn_models`. See `data/README.md` for details.
     These models were trained on VOC 2007 trainval.
@@ -83,7 +86,8 @@ data/scripts/fetch_faster_rcnn_models.sh
 
 To run the demo
 ```Shell
-tools/demo.py
+cd tools
+./demo.py
 ```
 The demo performs detection using a VGG16 network trained for detection on PASCAL VOC 2007.
 
