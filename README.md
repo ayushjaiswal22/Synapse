@@ -31,8 +31,10 @@ You can't use the distribution version of caffe or protobuf, those need to be co
 
 ### Installation
 
-Ubuntu 17.04
-------------
+#### Ubuntu 17.04
+Follow these detailed installation instructions to get the software running with CUDA.
+
+0. Install Ubuntu 17.04 and use ** Additional Drivers ** to activate the Nvidia binary driver (nvidia-375)
 
 1. Install dependencies (you need a root shell):
 ```Shell
