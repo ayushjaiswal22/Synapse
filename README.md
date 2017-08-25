@@ -42,7 +42,7 @@ pip2 install easydict
 ```
 2. Append to /etc/bash.bashrc (and execute in the shell for immediate effect):
 ```Shell
-export CUDAHOME=/usr/lib/nvidia-cuda-toolkit/
+export CUDAHOME=/usr/local/cuda
 export PYTHONPATH=~/py-faster-rcnn-ft/lib:$PYTHONPATH # we assume that you cloned py-faster-rcnn-ft directly into your home directory, adapt this accordingly if this is not true for your installation.
 
 ```
@@ -74,120 +74,59 @@ cd ../caffe-fast-rcnn
 make -j8
 make pycaffe
 ```
+
 6. Download pre-computed Faster R-CNN detectors
 ```Shell
 cd ..
-data/scripts/fetch_faster_rcnn_models.sh
+data/scripts/fetch_imagenet_models.sh
 ```
 
-    This will populate the `data` folder with `faster_rcnn_models`. See `data/README.md` for details.
-    These models were trained on VOC 2007 trainval.
+This will populate the `data` folder with `faster_imagenet_models`. See `data/README.md` for details.
+These models were trained on MS COCO trainval.
+
 
 ### Demo
 
 *After successfully completing [basic installation](#installation)*, you'll be ready to run the demo.
 
-To run the demo you need our caffemodel:
-```Shell
-wget http://www.dfki.de/~jan/vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel data/faster_rcnn_models/  -P data/faster_rcnn_models/
-cd tools
-./demo.py
-```
 The demo performs detection using a VGG16 network trained for detection on MSCOCO 2014 with the two classes person and car.
 
-### Beyond the demo: installation for training and testing models for VOC
-1. Download the training, validation, test data and VOCdevkit
-
+To run the demo you need our caffemodel and the MS COCO dataset:
 ```Shell
-wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtrainval_06-Nov-2007.tar
-wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCtest_06-Nov-2007.tar
-wget http://host.robots.ox.ac.uk/pascal/VOC/voc2007/VOCdevkit_08-Jun-2007.tar
-```
-
-2. Extract all of these tars into one directory named `VOCdevkit`
-
-```Shell
-tar xvf VOCtrainval_06-Nov-2007.tar
-tar xvf VOCtest_06-Nov-2007.tar
-tar xvf VOCdevkit_08-Jun-2007.tar
-```
-
-3. It should have this basic structure
-
-```Shell
-$VOCdevkit/                           # development kit
-$VOCdevkit/VOCcode/                   # VOC utility code
-$VOCdevkit/VOC2007                    # image sets, annotations, etc.
-# ... and several other directories ...
-```
-
-4. Create symlinks for the PASCAL VOC dataset
-
-```Shell
-cd $FRCN_ROOT/data
-ln -s $VOCdevkit VOCdevkit2007
-```
-    Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
-
-5. Create symlinks for the COCO dataset
-
-```Shell
-cd $FRCN_ROOT/data
-ln -s <path_to_downloaded_MScoco_dataset> coco
-```
-    Using symlinks is a good idea because you will likely want to share the same PASCAL dataset installation between multiple projects.
-
-5. [Optional] follow similar steps to get PASCAL VOC 2010 and 2012
-6. [Optional] If you want to use COCO, please see some notes under `data/README.md`
-7. Follow the next sections to download pre-trained ImageNet models
-
-### Beyond the demo: installation for training and testing models for MSCOCO
-
-1. Download the training, validation, test data and annotation file ( It doesn't matter where you download these files. For flexibility you will symlink these files)
-
-```Shell
+cd data
+mkdir -p coco/images
+cd coco/images
 wget http://msvocds.blob.core.windows.net/coco2014/train2014.zip
 wget http://msvocds.blob.core.windows.net/coco2014/val2014.zip
 wget http://msvocds.blob.core.windows.net/coco2014/test2014.zip
-wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
-```
-
-2. Extract all of these zips into one directory named `coco`
-
-```Shell
 unzip train2014.zip
 unzip val2014.zip
 unzip test2014.zip
+cd ..
+mkdir annotations
+cd annotations
+wget http://msvocds.blob.core.windows.net/annotations-1-0-3/instances_train-val2014.zip
 unzip instances_train-val2014.zip
-```
-3. It should have this basic structure
-
-```Shell
-coco/                           # coco folder
-coco/images/<unziped_image_train>                   # mscoco images, train
-coco/images/<unziped_image_val>                    # mscoco images, val.
-coco/images/<unziped_image_test>                   # mscoco images, test
-coco/annotations/<unziped_train_val>               # annotation file
-```
-4. Create symlink for the MSCOCO dataset
-```Shell
-cd $FRCN_ROOT/data
-ln -s <path_to_downloaded_MSCOCO_dataset> coco
+cd ../..
+wget -P data/faster_rcnn_models/ http://www.dfki.de/~jan/vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel
+cd tools
+./demo.py
 ```
 
 ### Available Classes To Train On (MSCOCO)
-after downloading datasets and creating a symlink as described in [Beyond the demo (MSCOCO)](#beyond-the-demo-installation-for-training-and-testing-models-for-mscoco) you can run a script to find out about possible classes you can train on.
+After downloading datasets you can run a script to find out about possible classes you can train on.
 The script is located at data/MSCOCO_API_categories.py
 
 For example : to get all classes with its ids (Note : you need the id of classes for later) call the following function : print_categories_from_name([]) and you will get the following output :
 
 ```Shell
-./data/MSCOCO_API_categories.py
+cd data
+./MSCOCO_API_categories.py
 
 {u'supercategory': u'person', u'id': 1, u'name': u'person'}
 {u'supercategory': u'vehicle', u'id': 2, u'name': u'bicycle'}
 {u'supercategory': u'vehicle', u'id': 3, u'name': u'car'}
-{u'supercategory': u'vehicle', u'id': 4, u'name': u'motorcycle'}
+{u'supercategory': u'vehicle', u'id': 4, u'name': u'motorcycle'}d
 {u'supercategory': u'vehicle', u'id': 5, u'name': u'airplane'}
 {u'supercategory': u'vehicle', u'id': 6, u'name': u'bus'}
 {u'supercategory': u'vehicle', u'id': 7, u'name': u'train'}
@@ -206,10 +145,11 @@ After finding out your classes you want to train on [(Available Classes To Train
 open the file : **experiments/cfgs/faster_rcnn_end2end.yml** and fill up CAT_IDS with the ids you're interested in.
 
 Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
+The default and recommended setting for iterations is 490000, this takes approximately one day with two NVIDIA GTX1080 cards. If you want to change this you need to change line 39 of experiments/scripts/faster_rcnn_end2end.sh
 
 ```Shell
-cd $FRCN_ROOT
-./expriments/scripts/faster_rcnn_end2end.sh 0 VGG_CNN_M_1024 coco
+./faster_rcnn_end2end.sh 0 VGG_CNN_M_1024 coco
+mv output/faster_rcnn_end2end/coco_2014_train 
 ```
 
 after creating model with specific classes you are interested in, you need to change the model name in tools/demo.py, see the variable called **NETS** and its key **vgg16**. 
