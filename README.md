@@ -43,6 +43,8 @@ pip2 install easydict
 2. Append to /etc/bash.bashrc (and execute in the shell for immediate effect):
 ```Shell
 export CUDAHOME=/usr/lib/nvidia-cuda-toolkit/
+export PYTHONPATH=~/py-faster-rcnn-ft/lib:$PYTHONPATH # we assume that you cloned py-faster-rcnn-ft directly into your home directory, adapt this accordingly if this is not true for your installation.
+
 ```
 
 3. Download https://developer.nvidia.com/compute/machine-learning/cudnn/secure/v7/prod/8.0_20170802/cudnn-8.0-linux-x64-v7-tgz (requires login)
@@ -85,12 +87,13 @@ data/scripts/fetch_faster_rcnn_models.sh
 
 *After successfully completing [basic installation](#installation)*, you'll be ready to run the demo.
 
-To run the demo
+To run the demo you need our caffemodel:
 ```Shell
+wget http://www.dfki.de/~jan/vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel data/faster_rcnn_models/  -P data/faster_rcnn_models/
 cd tools
 ./demo.py
 ```
-The demo performs detection using a VGG16 network trained for detection on PASCAL VOC 2007.
+The demo performs detection using a VGG16 network trained for detection on MSCOCO 2014 with the two classes person and car.
 
 ### Beyond the demo: installation for training and testing models for VOC
 1. Download the training, validation, test data and VOCdevkit

@@ -70,5 +70,7 @@ def print_categories_from_name(cat_strings=[]):
 if __name__ == '__main__':
 
     # Example calls
-    print_categories_from_id([4, 10])
+    print_categories_from_id([])
+    # If you want to detect only certain classes, this is the place to define them!
+    #print_categories_from_id([4, 10])
     # print_categories_from_name(["person", "dog", "cake"])

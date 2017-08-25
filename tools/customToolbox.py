@@ -59,7 +59,7 @@ def show_val_images(cat_ids):
     imgIds = coco.getImgIds(catIds=cat_ids)
 
     img = coco.loadImgs(imgIds[np.random.randint(0, len(imgIds))])[0]
-    image_path = "/home/kognit/development/coco/images/val2014/" + str(img['file_name'])
+    image_path = "../data/coco/images/val2014/" + str(img['file_name'])
     print "file: {}".format(image_path)
 
     categories = coco.loadCats(cat_ids)
@@ -102,7 +102,7 @@ def get_val_images(amount, cat_ids):
 
         for i in range(amount):
             img = coco.loadImgs(imgIds[np.random.randint(0, len(imgIds))])[0]
-            image_path = "/home/kognit/development/coco/images/val2014/" + str(img['file_name'])
+            image_path = "../data/coco/images/val2014/" + str(img['file_name'])
             print image_path
             path_list.append(image_path)
 
