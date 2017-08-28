@@ -145,11 +145,11 @@ After finding out your classes you want to train on [(Available Classes To Train
 open the file : **experiments/cfgs/faster_rcnn_end2end.yml** and fill up CAT_IDS with the ids you're interested in.
 
 Note : if you leave the list empty it will train on all classes. Then save the file and run the end2end script
-The default and recommended setting for iterations is 490000, this takes approximately one day with two NVIDIA GTX1080 cards. If you want to change this you need to change line 39 of experiments/scripts/faster_rcnn_end2end.sh
+The default and recommended setting for iterations is 490000, this takes approximately one day with one NVIDIA GTX1080 cards. If you want to change this you need to change line 39 of experiments/scripts/faster_rcnn_end2end.sh
 
 ```Shell
 ./faster_rcnn_end2end.sh 0 VGG_CNN_M_1024 coco
-mv output/faster_rcnn_end2end/coco_2014_train 
+mv output/faster_rcnn_end2end/coco_2014_train/vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel data/faster_rcnn_models/
 ```
 
 after creating model with specific classes you are interested in, you need to change the model name in tools/demo.py, see the variable called **NETS** and its key **vgg16**. 
