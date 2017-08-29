@@ -21,6 +21,7 @@ import skimage.io as io
 import matplotlib.pyplot as plt
 import pylab
 import sys
+import os
 
 pylab.rcParams['figure.figsize'] = (10.0, 8.0)
 
@@ -111,5 +112,69 @@ def get_val_images(amount, cat_ids):
     return path_list
 
 
+def get_category_images(cat_ids, annotation_path="/home/kognit/Desktop/DFKI_GitHub/py-faster-rcnn/data/coco/annotations/instances_minival2014.json", image_folder_path="", print_file_names=True):
+    """
+    Returns a dictionary containing all image file names from the given annotation with the defined category id.
+    :param cat_ids: list of category ids with which the returned image paths should be labeled with
+    :param annotation_path: path of the .json file containing the image annotations
+    :param image_folder_path: file path of the folder containing all image data (dataset) - optional
+    :param print_file_names: if True, all found file names will be printed additionally to the console
+    :return: dictionary of the shape: dict[category id] = <list of image file names>
+    """
+
+    # check if file exists
+    if not os.path.isfile(annotation_path):
+        print("{} is not a valid file. Please check the file path".format(annotation_path))
+        assert False
+
+    # check if the file is a json file
+    if not annotation_path.lower().endswith('.json'):
+        print("Annotation files have to in json format!")
+        assert False
+
+    val_annFile = annotation_path
+    coco = COCO(val_annFile)
+
+    cat_names = []
+
+    if len(cat_ids) == 0:
+        categories = coco.loadCats(coco.getCatIds())
+    else:
+        categories = coco.loadCats(cat_ids)
+
+    for item in categories:
+        cat_names.append(str(item['name']))
+
+    image_dict = {}
+
+    for index, cur_cat_id in enumerate(cat_ids):
+
+        image_dict[cur_cat_id] = []
+
+        if print_file_names:
+            print "\n--- Images for category {} ---".format(cat_names[index])
+
+        # ids of all images that belong to the cat id
+        imgIds = coco.getImgIds(catIds=cur_cat_id)
+        imgs = coco.loadImgs(imgIds)
+
+        for img in imgs:
+
+            if len(image_folder_path) > 0:
+                image_path = image_folder_path + "/" + str(img['file_name'])
+            else:
+                image_path = str(img['file_name'])
+
+            if print_file_names:
+                print image_path
+
+            image_dict[cur_cat_id].append(image_path)
+
+        print "\nLoaded {} images for the category {}\n".format(str(len(imgs)), str(cat_names[index]))
+
+    return image_dict
+
+
 if __name__ == '__main__':
-    show_val_images([3])
+    # show_val_images([3])
+    get_category_images([3])
