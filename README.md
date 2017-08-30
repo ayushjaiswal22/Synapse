@@ -67,7 +67,7 @@ make install
 ```
 5. Build Cython modules, Caffe, pycaffe (was tested with Ubuntu 17.04, in case of errors consult http://caffe.berkeleyvision.org/installation.html)
 ```Shell
-git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft
+git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft.git
 cd py-faster-rcnn-ft/lib &&
 make -j8 &&
 cd ../caffe-fast-rcnn &&
