@@ -21,7 +21,7 @@ The changes were concerned about finetuning (hence -ft) deep neural networks:
 
 You can't use the distribution version of caffe or protobuf, those need to be compiled as some code needed special adaptations.
 
-  **Note:** You don't need to install pycaffe separately, we included pycaffe in our repository with small changes needed for our research([cuDNN v5](https://github.com/rbgirshick/caffe-fast-rcnn/issues/14)).
+  **Note:** You don't need to install pycaffe separately, we included pycaffe in our repository with small changes needed for our research([cuDNN](https://github.com/rbgirshick/caffe-fast-rcnn/issues/14)).
   
 ### Requirements: hardware
 1. For training smaller networks (ZF, VGG_CNN_M_1024) a good GPU (e.g., Titan, K20, K40, ...) with at least 3G of memory suffices
@@ -59,19 +59,19 @@ ldconfig
 ```Shell
 git clone https://github.com/google/protobuf.git
 cd protobuf
-./autogen.sh
-./configure --prefix=/usr CC=/usr/bin/gcc-5
-make -j8
-make check
+./autogen.sh &&
+./configure --prefix=/usr CC=/usr/bin/gcc-5 &&
+make -j8 &&
+make check &&
 make install
 ```
 5. Build Cython modules, Caffe, pycaffe (was tested with Ubuntu 17.04, in case of errors consult http://caffe.berkeleyvision.org/installation.html)
 ```Shell
 git clone https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft
-cd py-faster-rcnn-ft/lib
-make -j8
-cd ../caffe-fast-rcnn
-make -j8
+cd py-faster-rcnn-ft/lib &&
+make -j8 &&
+cd ../caffe-fast-rcnn &&
+make -j8 &&
 make pycaffe
 ```
 
@@ -82,14 +82,14 @@ data/scripts/fetch_imagenet_models.sh
 ```
 
 This will populate the `data` folder with `faster_imagenet_models`. See `data/README.md` for details.
-These models were trained on MS COCO trainval.
+These models were trained on the ImageNet ILSVRC-2012 train dataset.
 
 
 ### Demo
 
 *After successfully completing [basic installation](#installation)*, you'll be ready to run the demo.
 
-The demo performs detection using a VGG16 network trained for detection on MSCOCO 2014 with the two classes person and car.
+The demo performs detection using a VGG_CNN_M_1024 network trained for detection on MS COCO 2014 with the two classes person and car.
 
 To run the demo you need our caffemodel and the MS COCO dataset:
 ```Shell
@@ -113,11 +113,11 @@ cd tools
 ./demo.py
 ```
 
-### Available Classes To Train On (MSCOCO)
+### Available Classes To Train On (MS COCO)
 After downloading datasets you can run a script to find out about possible classes you can train on.
 The script is located at data/MSCOCO_API_categories.py
 
-For example : to get all classes with its ids (Note : you need the id of classes for later) call the following function : print_categories_from_name([]) and you will get the following output :
+For example: to get all classes with its ids (Note : you need the id of classes for later) call the following function: print_categories_from_name([]) and you will get the following output :
 
 ```Shell
 cd data
@@ -140,7 +140,7 @@ cd data
 
 ### Train on custom classes
 
-After finding out your classes you want to train on [(Available Classes To Train On (MSCOCO)](#available-classes-to-train-on-mscoco), you need to do the following changes to train the classes:
+After identifying the classes you want to train on [(Available Classes To Train On (MSCOCO)](#available-classes-to-train-on-mscoco), you need to do the following changes to train the classes:
 
 open the file : **experiments/cfgs/faster_rcnn_end2end.yml** and fill up CAT_IDS with the ids you're interested in.
 
@@ -152,7 +152,7 @@ The default and recommended setting for iterations is 490000, this takes approxi
 mv output/faster_rcnn_end2end/coco_2014_train/vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel data/faster_rcnn_models/
 ```
 
-after creating model with specific classes you are interested in, you need to change the model name in tools/demo.py, see the variable called **NETS** and its key **vgg16**. 
+After creating the caffemodel with specific classes you are interested in, you need to change the model name in tools/demo.py, see the variable called **NETS** and its key **vgg16**. Note that the demo.py script will use the entry vgg16 if the ```--net``` argument is omitted.
 
 ```Shell
 NETS = {'vgg16': ('VGG16',
@@ -162,16 +162,16 @@ NETS = {'vgg16': ('VGG16',
 Then run the demo script :
 
 ```Shell
-./tools/demo.py
+cd tools
+./demo.py
 ```
 
 
 ### Download pre-trained ImageNet models
 
-Pre-trained ImageNet models can be downloaded for the three networks described in the paper: ZF and VGG16.
+Pre-trained ImageNet models can be downloaded for the three networks described in the paper: ZF, VGG_CNN_M_1024 and VGG16.
 
 ```Shell
-cd $FRCN_ROOT
 ./data/scripts/fetch_imagenet_models.sh
 ```
 VGG16 comes from the [Caffe Model Zoo](https://github.com/BVLC/caffe/wiki/Model-Zoo), but is provided here for your convenience.
@@ -179,26 +179,11 @@ ZF was trained at MSRA.
 
 ### Usage
 
-To train and test a Faster R-CNN detector using the **alternating optimization** algorithm from our NIPS 2015 paper, use `experiments/scripts/faster_rcnn_alt_opt.sh`.
-Output is written underneath `$FRCN_ROOT/output`.
+To train and test a Faster R-CNN detector using the **approximate joint training** method, use `faster_rcnn_end2end.sh`.
+Output is written underneath `output`.
 
 ```Shell
-cd $FRCN_ROOT
-./experiments/scripts/faster_rcnn_alt_opt.sh [GPU_ID] [NET] [--set ...]
-# GPU_ID is the GPU you want to train on
-# NET in {ZF, VGG_CNN_M_1024, VGG16} is the network arch to use
-# --set ... allows you to specify fast_rcnn.config options, e.g.
-#   --set EXP_DIR seed_rng1701 RNG_SEED 1701
-```
-
-("alt opt" refers to the alternating optimization training algorithm described in the NIPS paper.)
-
-To train and test a Faster R-CNN detector using the **approximate joint training** method, use `experiments/scripts/faster_rcnn_end2end.sh`.
-Output is written underneath `$FRCN_ROOT/output`.
-
-```Shell
-cd $FRCN_ROOT
-./experiments/scripts/faster_rcnn_end2end.sh [GPU_ID] [NET] [--set ...]
+./faster_rcnn_end2end.sh [GPU_ID] [NET] [--set ...]
 # GPU_ID is the GPU you want to train on
 # NET in {ZF, VGG_CNN_M_1024, VGG16} is the network arch to use
 # --set ... allows you to specify fast_rcnn.config options, e.g.
@@ -206,8 +191,6 @@ cd $FRCN_ROOT
 ```
 
 This method trains the RPN module jointly with the Fast R-CNN network, rather than alternating between training the two. It results in faster (~ 1.5x speedup) training times and similar detection accuracy. See these [slides](https://www.dropbox.com/s/xtr4yd4i5e0vw8g/iccv15_tutorial_training_rbg.pdf?dl=0) for more details.
-
-Artifacts generated by the scripts in `tools` are written in this directory.
 
 Trained Fast R-CNN networks are saved under:
 
