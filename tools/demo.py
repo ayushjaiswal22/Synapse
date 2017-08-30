@@ -49,7 +49,7 @@ import customToolbox
 # TODO: Automatically assign latest caffemodel here
 #  List pretrainend model you want to run the demo on here
 NETS = {'vgg16': ('VGG16',
-                  'vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel'),
+                  'vgg_cnn_m_1024_faster_rcnn_iter_490000-person-car-cat-1-3-17.caffemodel'),
         'zf': ('ZF',
                   'ZF_faster_rcnn_final.caffemodel')
         }

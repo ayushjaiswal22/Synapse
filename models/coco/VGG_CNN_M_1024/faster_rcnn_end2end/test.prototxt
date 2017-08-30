@@ -392,7 +392,7 @@ layer {
     decay_mult: 0.0
   }
   inner_product_param {
-    num_output: 3
+    num_output: 4
     weight_filler {
       type: "gaussian"
       std: 0.00999999977648
@@ -417,7 +417,7 @@ layer {
     decay_mult: 0.0
   }
   inner_product_param {
-    num_output: 12
+    num_output: 16
     weight_filler {
       type: "gaussian"
       std: 0.0010000000475
