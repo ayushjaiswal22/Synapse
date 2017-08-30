@@ -54,6 +54,8 @@ case $DATASET in
     TEST_IMDB="coco_2014_minival"
     PT_DIR="coco"
     ITERS=490000
+    # we need to delete the cache file!
+    rm data/cache/coco_2014_train_gt_roidb.pkl
     ;;
   *)
     echo "No dataset given"
