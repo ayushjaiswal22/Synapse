@@ -43,7 +43,7 @@ pip2 install easydict
 2. Append to /etc/bash.bashrc (and execute in the shell for immediate effect):
 ```Shell
 export CUDAHOME=/usr/local/cuda
-export PYTHONPATH=~/py-faster-rcnn-ft/lib:$PYTHONPATH # we assume that you cloned py-faster-rcnn-ft directly into your home directory, adapt this accordingly if this is not true for your installation.
+export PYTHONPATH=~/py-faster-rcnn-ft/lib:$PYTHONPATH # we assume that you will clone py-faster-rcnn-ft directly into your home directory, else adapt this accordingly - on multiuser systems a path like /opt/... might be more suitable.
 
 ```
 
