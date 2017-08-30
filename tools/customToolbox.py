@@ -112,7 +112,7 @@ def get_val_images(amount, cat_ids):
     return path_list
 
 
-def get_category_images(cat_ids, annotation_path="/home/kognit/Desktop/DFKI_GitHub/py-faster-rcnn/data/coco/annotations/instances_minival2014.json", image_folder_path="", print_file_names=True):
+def get_category_images(cat_ids, annotation_path="../data/coco/annotations/instances_minival2014.json", image_folder_path="", print_file_names=True):
     """
     Returns a dictionary containing all image file names from the given annotation with the defined category id.
     :param cat_ids: list of category ids with which the returned image paths should be labeled with
