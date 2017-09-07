@@ -206,14 +206,18 @@ output/<experiment directory>/<dataset name>/<network snapshot name>/
 
 ### References
 
-We especially appreciate a reference in your paper, should you use our code for a research project:
+If you use our software for a research project we appreciate a reference to our corresponding [paper](https://arxiv.org/pdf/1709.01476).
 
+BibTeX entry:
 ```
-	@misc{py-faster-rcnn-ft,
-		title = {py-faster-rcnn-ft: Custom Training of Deep Learning Models for Image Classification with py-faster-rcnn},
-		author={Sonntag, Daniel and Barz, Michael and Stauden, Sven and Rahmani, Vahid},
-		publisher={DFKI GmbH},
-		url={http://dfki.de/smartfactories/?page_id=616},
-		year={2017}
+	@article{Sonntag2017a,
+		title = {{Fine-tuning deep CNN models on specific MS COCO categories}},
+		author = {Sonntag, Daniel and Barz, Michael and Zacharias, Jan and Stauden, Sven and Rahmani, Vahid and Fóthi, Áron and Lőrincz, András},
+		archivePrefix = {arXiv},
+		arxivId = {1709.01476},
+		eprint = {1709.01476},
+		pages = {0--3},
+		url = {http://arxiv.org/abs/1709.01476},
+		year = {2017}
 	}
 ```
