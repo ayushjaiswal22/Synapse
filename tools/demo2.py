@@ -12,7 +12,7 @@ import random
 import customToolbox
 
 NETS = {'vgg16': ('VGG16',
-                  'vgg_cnn_m_1024_faster_rcnn_iter_253000.caffemodel'),
+                  'vgg_cnn_m_1024_faster_rcnn_iter_490000.caffemodel'),
         'zf': ('ZF',
                   'ZF_faster_rcnn_final.caffemodel')
         }
