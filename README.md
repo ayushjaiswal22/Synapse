@@ -1,10 +1,8 @@
-### Fork of py-faster-rcnn
-We forked the original version of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn) for adding changes relevant to our research. For quick introduction/license/etc. please see the original repository of [py-faster-rcnn](https://github.com/rbgirshick/py-faster-rcnn).
+# Synapse
+Fine-tuning of pretrained CNN model on specific classes of MS COCO Dataset using Faster RCNN 
 
-The changes were concerned about finetuning (hence -ft) deep neural networks:
-* automated change of network-layers if less classes are considered compared to the original network
-* more convenient selection of training classes from ms coco
-
+### Fork of py-faster-rcnn-ft
+We forked the original version of [py-faster-rcnn-ft](https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft) for adding changes relevant to our research. For quick introduction/license/etc. please see the original repository of [py-faster-rcnn-ft](https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft).
 
 ### Contents
 1. [Requirements: software](#requirements-software)
