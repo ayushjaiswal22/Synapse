@@ -204,7 +204,7 @@ output/<experiment directory>/<dataset name>/<network snapshot name>/
 
 ### References
 
-If you use our software for a research project, we appreciate a reference to our corresponding [paper](https://arxiv.org/pdf/1709.01476).
+We reffered the following research [paper](https://arxiv.org/pdf/1709.01476) for our project.
 
 BibTeX entry:
 ```
