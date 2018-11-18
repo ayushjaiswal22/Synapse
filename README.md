@@ -5,7 +5,7 @@ Fine-tuning of pretrained CNN model on specific classes of MS COCO Dataset using
 We forked the original version of [py-faster-rcnn-ft](https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft) for adding changes relevant to our research. For quick introduction/license/etc. please see the original repository of [py-faster-rcnn-ft](https://github.com/DFKI-Interactive-Machine-Learning/py-faster-rcnn-ft).
 
 ### Contents
-1. [Results]
+1. [Results](#results)
 2. [Requirements: software](#requirements-software)
 3. [Requirements: hardware](#requirements-hardware)
 4. [Installation](#installation)
@@ -19,14 +19,8 @@ We forked the original version of [py-faster-rcnn-ft](https://github.com/DFKI-In
 ### Results
 
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op1.jpeg)
-
-
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op2.jpeg)
-
-
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op3.jpeg)
-
-
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op4.jpeg)
 
 ### Requirements: software
