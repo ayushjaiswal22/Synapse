@@ -17,7 +17,6 @@ We forked the original version of [py-faster-rcnn-ft](https://github.com/DFKI-In
 10. [Usage](#usage)
 
 ### Results
-
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op1.jpeg)
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op2.jpeg)
 ![alt text](https://raw.githubusercontent.com/ayushjaiswal22/Synapse/master/data/demo/op3.jpeg)
